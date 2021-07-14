@@ -13,6 +13,26 @@ class S3ATimeInstrumentation extends SparkPlugin {
   // S3A metrics registration using Hadoop 2.7 API
   def s3aMetrics(metricRegistry: MetricRegistry): Unit= {
 
+//    ------------------------------------------------------------------------------------------------------------------------
+    metricRegistry.register(MetricRegistry.name("S3AWriteTimeMuSec"), new Gauge[Long] {
+      override def getValue: Long = {
+        org.apache.hadoop.fs.s3a.S3ATimeInstrumentation.getTimeElapsedWriteMusec
+      }
+    })
+
+    metricRegistry.register(MetricRegistry.name("S3ACPUTimeDuringWriteMuSec"), new Gauge[Long] {
+      override def getValue: Long = {
+        org.apache.hadoop.fs.s3a.S3ATimeInstrumentation.getTimeCPUWriteMusec
+      }
+    })
+
+    metricRegistry.register(MetricRegistry.name("S3AWriteBytesCustom"), new Gauge[Long] {
+      override def getValue: Long = {
+        org.apache.hadoop.fs.s3a.S3ATimeInstrumentation.getWriteBytesCustom
+      }
+    })
+//    ------------------------------------------------------------------------------------------------------------------------
+
     metricRegistry.register(MetricRegistry.name("S3AReadTimeMuSec"), new Gauge[Long] {
       override def getValue: Long = {
         org.apache.hadoop.fs.s3a.S3ATimeInstrumentation.getTimeElapsedReadMusec
